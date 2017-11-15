@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-lg-6 offset-lg-3">
+    <h4 class="text-center separador-20">Editar Mis Datos</h4>
+    <div class="alert alert-success col-lg-6 offset-lg-3" role="alert" *ngIf="status == 'ok' && message">
+      {{message}}
+    </div>
+    <div class="alert alert-danger col-lg-6 offset-lg-3" role="alert" *ngIf="status == 'error' && message">
+      {{message}}
+    </div>
+    <form action="" #registerForm="ngForm" (ngSubmit)="onSubmit()" class="col-lg-6 offset-lg-3">
+      <p>
+        <label for="name">Nombre</label>
+        <input type="text" name="name" #name="ngModel" [(ngModel)]="user.name" class="form-control" required>
+        <span *ngIf="!name.valid && (name.dirty || name.touched) ">El nombre es obligatorio!</span>
+      </p>
+      <p>
+        <label for="surname">Apellido</label>
+        <input type="text" name="surname" #surname="ngModel" [(ngModel)]="user.surname" class="form-control" required>
+        <span *ngIf="!surname.valid && surname.touched">El apellido es obligatorio!</span>
+      </p>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" name="email" #email="ngModel" [(ngModel)]="user.email" class="form-control" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{3,}"
+          required>
+        <div *ngIf="email.invalid && (email.dirty || email.touched)">
+          <span *ngIf="email.errors.required">El email es obligatorio!</span>
+          <span *ngIf="email.errors && email.errors.pattern">El email es invalido!</span>
+        </div>
+      </div>
+      <p>
+        <label for="celular">Celular</label>
+        <input type="text" name="celular" #celular="ngModel" [(ngModel)]="user.clientData.celular" class="form-control">
+        <span *ngIf="!celular.valid && celular.touched">El celular es obligatorio!</span>
+        <span *ngIf="user.clientData.celular == '' " style="font-size: 12px; color: Red">*Para mejor comunicacion ingresa tu celular</span>
+      </p>
+      <div>
+        <label for="">Imagen</label>
+        <div class="imageforedit text-center" *ngIf="user.image && user.image != 'null' ">
+          <img src="{{url + 'get-image-user/' + user.image }}" alt="" style="max-width: 200px">
+        </div>
+        <input type="file" name="" id="" placeholder="Subir imagen.." (change)="fileChangeEvent($event)">
+      </div>
+
+      <div class="text-center">
+        <input type="submit" value="Actualizar Mis Datos" class="btn btn-primary" [disabled]=" !registerForm.form.valid " />
+      </div>
+    </form>
+  </div>
+
+</div>

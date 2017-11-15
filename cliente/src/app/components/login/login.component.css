@@ -1,0 +1,69 @@
+.body-login {
+  width: 100%;
+  height: 93vh;
+  background-color: #00bcd4;
+  
+}
+
+.main-login {
+  max-width: 303px;
+  margin: 0 auto;
+  background-color: white;
+  margin-top: 60px;
+  margin-bottom: 60px;
+  box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21);
+  padding-top: 20px;
+  padding-bottom: 30px;
+}
+
+.titulo-login span {
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.logo-login {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  background-image: url('./../../../assets/images/oso.jpg');
+  background-size: cover;
+  display: block;
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  margin-bottom: 10px;
+}
+
+.form-group-login label {
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.form-group-login .input-group input {
+  font-size: 13px;
+}
+
+.main-login .btn-entrar {
+  background-color: #ff4081;
+  border-color: #ff4081;
+  font-size: 13px;
+}
+
+.main-login .btn-entrar:hover {
+  background-color: #ff5a92;
+  border-color: #ff5a92;
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.main-login a {
+  font-size: 13px;
+  color: #00bcd4;
+}
+.social-login a{
+    color: white !important;
+}
+.social-login a:hover{
+    cursor: pointer;
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}

@@ -1,0 +1,57 @@
+<div class="body-login">
+  <div class="container">
+    <div class="row">
+      <div class="main-login col-sm-12">
+        <div class="logo-login text-center"></div>
+        <div class="titulo-login text-center">
+          <span>INICIAR SESION</span>
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf=" status == 'error' ">
+          {{message}}
+        </div>
+        <div class="separador-10"></div>
+        <div class="alert alert-success" role="alert" *ngIf="identity">
+          <span>Usted ya esta logueado</span>
+        </div>
+        <div class="separador-10"></div>
+        <div *ngIf="!identity">
+          <form action="" #loginForm="ngForm" (ngSubmit)="onSubmit()">
+            <div class="form-group-login">
+              <label for="email" class="">Email</label>
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">
+                  <i class="fa fa-envelope" aria-hidden="true"></i>
+                </span>
+                <input type="text" class="form-control" placeholder="Ingresa tu email" aria-describedby="basic-addon1" name="email" #email="ngModel"
+                  [(ngModel)]="user.email" required>
+              </div>
+            </div>
+            <div class="separador-10"></div>
+            <div class="form-group-login">
+              <label for="password" class="">Contraseña</label>
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">
+                  <i class="fa fa-key" aria-hidden="true"></i>
+                </span>
+                <input type="password" class="form-control" placeholder="Ingresa tu contraseña" aria-describedby="basic-addon1" name="password"
+                  #password="ngModel" [(ngModel)]="user.password" required>
+              </div>
+            </div>
+            <div class="separador-10"></div>
+            <input type="submit" class="btn btn-primary btn-md btn-block btn-entrar" value="Entrar" [disabled]="identity" />
+          </form>
+          <div class="separador-20"></div>
+          <hr>
+          <div class="social-login">
+            <a class="btn btn-block btn-social btn-facebook btn-md">
+              <span class="fa fa-facebook"></span>Entrar con Facebook
+            </a>
+          </div>
+          <div class="separador-10"></div>
+          <a href="" [routerLink]="['/register']">Registrate ahora!</a>
+          <a href="" style="float:right">Recuperar contraseña</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
