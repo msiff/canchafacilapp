@@ -15,6 +15,7 @@
     "connect-multiparty": "^2.1.0",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
+    "jimp": "^0.2.28",
     "jwt-simple": "^0.5.1",
     "moment": "^2.19.1",
     "mongoose": "^4.13.1",

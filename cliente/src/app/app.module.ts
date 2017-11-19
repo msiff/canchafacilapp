@@ -4,6 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 
+// Validators
+import { EqualValidator } from './components/register/passwordMatch.directive';
+
+// Social Login
+import { SocialLoginModule, AuthServiceConfig, FacebookLoginProvider } from 'ng4-social-login';
+const CONFIG = new AuthServiceConfig([{
+  id: FacebookLoginProvider.PROVIDER_ID,
+  provider: new FacebookLoginProvider('163872397683863')
+}]);
+export function provideConfig() {
+  return CONFIG;
+}
+///////
+
 // Rutas
 import { routing, appRoutingProviders } from './app.routing';
 
@@ -23,15 +37,17 @@ import { EditarMisdatosComponent } from './components/editar-misdatos/editar-mis
     LoginComponent,
     RegisterComponent,
     MisDatosComponent,
-    EditarMisdatosComponent
+    EditarMisdatosComponent,
+    EqualValidator
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    SocialLoginModule,
     routing
   ],
-  providers: [appRoutingProviders],
+  providers: [appRoutingProviders, { provide: AuthServiceConfig, useFactory: provideConfig}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,10 +4,11 @@
       <h3 class="text-center">Mis Datos</h3>
     </div>
     <div class="col-lg-8 offset-lg-2">
-      <div class="misdatos-image">
-        <img src="" alt="">
-      </div>
       <div class="misdatos-data text-center">
+        <div class="text-center">
+            <img src="{{url + 'get-image-user/' + identity.image}}" alt="" class="rounded-circle" style="width: 180px; height: 180px" *ngIf="identity.image != 'Null' ">
+            <img src="{{identity.photoUrl}}" alt="" class="rounded-circle" style="width: 180px; height: 180px" *ngIf="identity.photoUrl != 'Null' ">
+        </div>
         <p>
           <span>{{user.name +" "+user.surname}}</span>
         </p>
@@ -28,16 +29,16 @@
         <div class="separador-20"></div>
         <div class="row">
           <div class="col-md-4 text-center">
-            <h6>Confiabilidad</h6>
-            <h3>{{user.clientData.confiabilidad}}%</h3>
+            <h6>Reservas Totales</h6>
+            <h3>{{user.clientData.confiabilidad}}</h3>
           </div>
           <div class="col-md-4 text-center">
             <h6>Asistencias</h6>
             <h3>{{user.clientData.confiabilidad}}</h3>
           </div>
           <div class="col-md-4 text-center">
-            <h6>Reservas Totales</h6>
-            <h3>{{user.clientData.confiabilidad}}</h3>
+            <h6>Confiabilidad</h6>
+            <h3>{{user.clientData.confiabilidad}}%</h3>
           </div>
         </div>
       </div>

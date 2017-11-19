@@ -10,9 +10,11 @@ var User = schema({
     email: String,
     password: String,
     role: { type: String, enum: ['client', 'owner', 'admin'], default: 'client'},
-    image: String,
+    image: String, // Esta es la foto local
+    photoUrl: String, // Esta foto es la de facebook
     clientData: { complejosFav: [String], confiabilidad: Number, asistencias: Number, celular: String},
-    ownerData: { misComplejos: [String] }
+    ownerData: { misComplejos: [String] },
+    providers: {facebook: {uid: String} }
 
     // Aca en complejos favoritos o mis complejos debemos especificarle que el objeto
     // que va guardado es de tipo Complejo para poder hacer populate.

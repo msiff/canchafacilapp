@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-lg-6 offset-lg-3">
+  <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3">
     <h4 class="text-center separador-20">Editar Mis Datos</h4>
     <div class="alert alert-success col-lg-6 offset-lg-3" role="alert" *ngIf="status == 'ok' && message">
       {{message}}
@@ -7,40 +7,53 @@
     <div class="alert alert-danger col-lg-6 offset-lg-3" role="alert" *ngIf="status == 'error' && message">
       {{message}}
     </div>
-    <form action="" #registerForm="ngForm" (ngSubmit)="onSubmit()" class="col-lg-6 offset-lg-3">
+    <form action="" #registerForm="ngForm" (ngSubmit)="onSubmit()" class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 editar-datos-form">
       <p>
         <label for="name">Nombre</label>
-        <input type="text" name="name" #name="ngModel" [(ngModel)]="user.name" class="form-control" required>
-        <span *ngIf="!name.valid && (name.dirty || name.touched) ">El nombre es obligatorio!</span>
+        <input type="text" name="name" #name="ngModel" [(ngModel)]="user.name" class="form-control" required pattern="[a-zA-Z][a-zA-Z ]+">
+        <span [hidden]="name.valid || name.pristine" class="text-danger">
+          <span [hidden]="!name.hasError('required')">Nombre es requerido</span>
+          <span [hidden]="!name.hasError('pattern')">El nombre pude tener letras solamente</span>
+        </span>
       </p>
       <p>
         <label for="surname">Apellido</label>
-        <input type="text" name="surname" #surname="ngModel" [(ngModel)]="user.surname" class="form-control" required>
-        <span *ngIf="!surname.valid && surname.touched">El apellido es obligatorio!</span>
+        <input type="text" name="surname" #surname="ngModel" [(ngModel)]="user.surname" class="form-control" [required]="!user.providers.facebook.uid">
+        <span [hidden]="surname.valid || surname.pristine" class="text-danger">
+          <span [hidden]="!surname.hasError('required')">Apellido es requerido</span>
+          <span [hidden]="!surname.hasError('pattern')">El apellido pude tener letras solamente</span>
+        </span>
       </p>
-      <div>
+      <p>
         <label for="email">Email</label>
-        <input type="email" name="email" #email="ngModel" [(ngModel)]="user.email" class="form-control" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{3,}"
+        <input type="email" name="email" #email="ngModel" [(ngModel)]="user.email" class="form-control" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
           required>
-        <div *ngIf="email.invalid && (email.dirty || email.touched)">
-          <span *ngIf="email.errors.required">El email es obligatorio!</span>
-          <span *ngIf="email.errors && email.errors.pattern">El email es invalido!</span>
-        </div>
-      </div>
+        <span [hidden]="email.valid || email.pristine" class="text-danger">
+          <span [hidden]="!email.hasError('required')">Email es requerido</span>
+          <span [hidden]="!email.hasError('pattern')">El formato del email debe ser
+            <small>
+              <b>joe@abc.com</b>
+            </small>
+          </span>
+        </span>
+      </p>
       <p>
         <label for="celular">Celular</label>
         <input type="text" name="celular" #celular="ngModel" [(ngModel)]="user.clientData.celular" class="form-control">
-        <span *ngIf="!celular.valid && celular.touched">El celular es obligatorio!</span>
-        <span *ngIf="user.clientData.celular == '' " style="font-size: 12px; color: Red">*Para mejor comunicacion ingresa tu celular</span>
+        <span *ngIf="user.clientData.celular == '' " style="font-size: 12px; color: Red">*Recomendamos ingresar un numero de celular</span>
       </p>
       <div>
         <label for="">Imagen</label>
-        <div class="imageforedit text-center" *ngIf="user.image && user.image != 'null' ">
-          <img src="{{url + 'get-image-user/' + user.image }}" alt="" style="max-width: 200px">
+        <div class="text-center">
+          <img src="{{url + 'get-image-user/' + identity.image}}" alt="" class="rounded-circle" style="width: 180px; height: 180px"
+            *ngIf="identity.image != 'Null' ">
+          <img src="{{identity.photoUrl}}" alt="" class="rounded-circle" style="width: 180px; height: 180px" *ngIf="identity.photoUrl != 'Null' ">
         </div>
-        <input type="file" name="" id="" placeholder="Subir imagen.." (change)="fileChangeEvent($event)">
+        <input class="separador-10" type="file" name="" id="" placeholder="Subir imagen.." (change)="fileChangeEvent($event)">
+        <p>
+          <span style="font-size: 12px; color: Red">*Para cambiar la imagen selecciona una aqui, de lo contrario no se modificara.</span>
+        </p>
       </div>
-
       <div class="text-center">
         <input type="submit" value="Actualizar Mis Datos" class="btn btn-primary" [disabled]=" !registerForm.form.valid " />
       </div>

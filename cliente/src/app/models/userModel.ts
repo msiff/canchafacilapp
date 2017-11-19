@@ -7,7 +7,9 @@ export class User {
         public password: String,
         public role: String,
         public image: String,
+        public photoUrl: String,
         public ownerData: {},
-        public clientData: {}
+        public clientData: {},
+        public providers: {}
     ) {}
 }

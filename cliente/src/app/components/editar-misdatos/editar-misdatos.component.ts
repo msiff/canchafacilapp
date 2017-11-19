@@ -9,6 +9,7 @@ import { UserService } from '../../services/user.service';
 import { GLOBAL } from './../../services/global.service';
 import { UploadService } from './../../services/upload.service';
 
+
 @Component({
   selector: 'app-editar-misdatos',
   templateUrl: './editar-misdatos.component.html',
@@ -24,8 +25,10 @@ export class EditarMisdatosComponent implements OnInit {
   public status;
   public message;
   public filesToUpload: Array<File>;
+  public imgurl;
 
-  constructor(private _userService: UserService, private _uploadService: UploadService) {
+  constructor(private _userService: UserService, private _uploadService: UploadService,
+    private _router: Router, ) {
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
     this.user = this.identity;
@@ -55,13 +58,19 @@ export class EditarMisdatosComponent implements OnInit {
                 if (result.newImage) {
                   // New image es lo que devuelve la api si se actualiza la imagen.
                   this.user.image = result.newImage;
+                  this.user.photoUrl = 'Null';
+                  // console.log(result.newImage);
+                  // console.log(this.user);
                   localStorage.setItem('identity', JSON.stringify(this.user));
                   // console.log(this.user);
                   this.status = 'ok';
                   this.message = 'Datos e imagen actualizados correctamente!';
+                  this._router.navigate(['/mis-datos']);
                 } else {
+                  localStorage.setItem('identity', JSON.stringify(this.user));
                   this.status = 'error';
                   this.message = 'Imagen no subida, datos actualizados';
+                  this._router.navigate(['/mis-datos']);
                 }
               }, (error) => {
                 this.status = 'error';
@@ -76,6 +85,7 @@ export class EditarMisdatosComponent implements OnInit {
             localStorage.setItem('identity', JSON.stringify(this.user));
             this.status = 'ok';
             this.message = 'Datos actualizados correctamente!';
+            this._router.navigate(['/mis-datos']);
           }
         }
       },

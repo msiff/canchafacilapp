@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -30,6 +30,14 @@ export class UserService {
         const params = JSON.stringify(user_to_login);
         const headers = new Headers({ 'Content-Type': 'application/json' });
         return this._http.post(this.url + 'login', params, { headers: headers }).map(res => res.json());
+    }
+
+    loginFacebook(data) {
+        const params = JSON.stringify(data);
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({headers: headers});
+
+        return this._http.post(this.url + 'loginFacebook', params, options).map(res => res.json());
     }
 
     getIdentity() {

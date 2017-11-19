@@ -19,11 +19,14 @@ export class MisDatosComponent implements OnInit {
   public user: User;
   public identity;
   public token;
+  public imgurl;
+  public url;
 
   constructor(private _userService: UserService, private _router: Router) {
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
     this.user = this.identity;
+    this.url = GLOBAL.url;
    }
 
   ngOnInit() {

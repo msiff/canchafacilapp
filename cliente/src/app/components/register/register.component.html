@@ -1,36 +1,93 @@
-<div class="col-lg-6">
-  <h4>Registrarse</h4>
-  <div class="alert alert-success" role="alert" *ngIf="status == 'ok' && message">
-    {{message}}
-  </div>
-  <div class="alert alert-danger" role="alert" *ngIf="status == 'error' && message">
-    {{message}}
-  </div>
-  <form action="" #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" class="col-lg-10">
-    <p>
-      <label for="name">Nombre</label>
-      <input type="text" name="name" #name="ngModel" [(ngModel)]="user.name" class="form-control" required>
-      <span *ngIf="!name.valid && (name.dirty || name.touched) ">El nombre es obligatorio!</span>
-    </p>
-    <p>
-      <label for="surname">Apellido</label>
-      <input type="text" name="surname" #surname="ngModel" [(ngModel)]="user.surname" class="form-control" required>
-      <span *ngIf="!surname.valid && surname.touched">El apellido es obligatorio!</span>
-    </p>
-    <div>
-      <label for="email">Email</label>
-      <input type="email" name="email" #email="ngModel" [(ngModel)]="user.email" class="form-control" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{3,}"
-        required>
-      <div *ngIf="email.invalid && (email.dirty || email.touched)">
-        <span *ngIf="email.errors.required">El email es obligatorio!</span>
-        <span *ngIf="email.errors && email.errors.pattern">El email es invalido!</span>
+<div class="body-login">
+  <div class="container">
+    <div class="row">
+      <div class="main-login col-sm-12">
+        <div class="logo-login text-center"></div>
+        <div class="titulo-login text-center">
+          <span>REGISTRARSE</span>
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="status == 'error' && message">
+          {{message}}
+        </div>
+        <div class="separador-10"></div>
+        <div class="alert alert-success" role="alert" *ngIf="status == 'ok' && message">
+          <strong>Registro completo! </strong>Puedes iniciar sesion <a href="" class="alert-link" [routerLink]="['/login']">Aquí</a>.
+          <!-- <span>Se registro correctamente, puede iniciar sesion </span>
+          <a href="" [routerLink]="['/login']">Acá</a> -->
+        </div>
+        <div class="separador-10"></div>
+        <div *ngIf="!identity">
+          <form action="" #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+            <div class="form-group-login">
+              <label for="name" class="">Nombre</label>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Ingresa tu nombre" aria-describedby="basic-addon1" name="name" #name="ngModel"
+                  [(ngModel)]="user.name" required pattern="[a-zA-Z][a-zA-Z ]+">
+              </div>
+              <span [hidden]="name.valid || name.pristine" class="text-danger">
+                <span [hidden]="!name.hasError('required')">Nombre es requerido</span>
+                <span [hidden]="!name.hasError('pattern')">El nombre pude tener letras solamente</span>
+              </span>
+            </div>
+            <div class="form-group-login">
+              <label for="surname" class="">Apellido</label>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Ingresa tu apellido" aria-describedby="basic-addon1" name="surname"
+                  #surname="ngModel" [(ngModel)]="user.surname" required pattern="[a-zA-Z][a-zA-Z ]+">
+              </div>
+              <span [hidden]="surname.valid || surname.pristine" class="text-danger">
+                <span [hidden]="!surname.hasError('required')">Apellido es requerido</span>
+                <span [hidden]="!surname.hasError('pattern')">El apellido pude tener letras solamente</span>
+              </span>
+            </div>
+            <div class="form-group-login">
+              <label for="email" class="">Email</label>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Ingresa tu email" aria-describedby="basic-addon1" name="email" #email="ngModel"
+                  [(ngModel)]="user.email" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+              </div>
+              <span [hidden]="email.valid || email.pristine" class="text-danger">
+                <span [hidden]="!email.hasError('required')">Email es requerido</span>
+                <span [hidden]="!email.hasError('pattern')">El formato del email debe ser
+                  <small>
+                    <b>joe@abc.com</b>
+                  </small>
+                </span>
+              </span>
+            </div>
+            <div class="form-group-login">
+              <label for="password" class="">Contraseña</label>
+              <div class="input-group">
+                <input type="password" class="form-control" placeholder="Ingresa tu contraseña" aria-describedby="basic-addon1" name="password"
+                  #password="ngModel" [(ngModel)]="user.password" required validateEqual="confirmPassword" reverse="true">
+              </div>
+              <span [hidden]="password.valid || password.pristine" class="text-danger">
+                <span [hidden]="!email.hasError('required')">Contraseña es requerido</span>
+              </span>
+            </div>
+            <div class="form-group-login separador-10">
+              <!-- <label for="password" class="">Contraseña</label> -->
+              <div class="input-group">
+                <input type="password" class="form-control" placeholder="vuelve a ingresar tu contraseña" aria-describedby="basic-addon1"
+                  name="confirmPassword" #confirmPassword="ngModel" [(ngModel)]="user.confirmPassword" required validateEqual="password">
+              </div>
+              <span [hidden]="confirmPassword.valid || confirmPassword.pristine" class="text-danger">La contraseña no coincide</span>
+            </div>
+            <div class="separador-10"></div>
+            <input type="submit" class="btn btn-primary btn-md btn-block btn-entrar" value="Registrarme" [disabled]="!registerForm.form.valid"/>
+          </form>
+          <div class="separador-20"></div>
+          <hr>
+          <div class="social-login">
+            <a class="btn btn-block btn-social btn-facebook btn-md" (click)="signInWithFB();">
+              <span class="fa fa-facebook"></span>Registrarme con Facebook
+            </a>
+          </div>
+          <div class="separador-10"></div>
+          <a href="" [routerLink]="['/login']">Ya tienes cuenta?</a>
+          <a href="" style="float:right">Recuperar contraseña</a>
+        </div>
       </div>
     </div>
-    <p>
-      <label for="password">Contrasena</label>
-      <input type="password" name="password" #password="ngModel" [(ngModel)]="user.password" class="form-control" required>
-      <span *ngIf="!password.valid && password.touched">La contrasena es obligatoria!</span>
-    </p>
-    <input type="submit" value="Registrarme" class="btn btn-primary" [disabled]=" !registerForm.form.valid " />
-  </form>
+  </div>
 </div>

@@ -16,6 +16,7 @@ var midUpload = multipart({uploadDir: './uploads/users'});
 api.get('/pruebas', userController.pruebas);
 api.post('/registrar-user', userController.registrarUser);
 api.post('/login', userController.loginUser);
+api.post('/loginFacebook', userController.loginFacebook);
 api.put('/update-user/:id', midAuth.ensureAuth, userController.updateUser);
 api.post('/upload-image-user/:id',[ midAuth.ensureAuth, midUpload ], userController.uploadImage);
 api.get('/get-image-user/:imageFile', userController.getImage);
