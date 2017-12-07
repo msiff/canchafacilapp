@@ -74,8 +74,8 @@ export class RegisterComponent implements OnInit, DoCheck {
   onSubmit(registerForm) {
     this._userService.registerUser(this.user).subscribe(
       response => {
-        if (response.user && response.user._id) {
-          this.message = 'El registro se realizo correctamente';
+        if (response.type === 'ok') {
+          this.message = response.message;
           this.status = 'ok';
           // console.log(this.user);
           // Esto resetea el formulario solo si el usuario se crea correctamente, para eso en

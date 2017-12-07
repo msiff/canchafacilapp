@@ -1,0 +1,45 @@
+<div class="body-login">
+    <div class="container">
+      <div class="row">
+        <div class="main-login col-sm-12">
+          <div class="logo-login text-center"></div>
+          <div class="titulo-login text-center">
+            <span>REENVIAR EMAIL DE CONFIRMACION</span>
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="status == 'error' && message">
+            {{message}}
+          </div>
+          <div class="separador-10"></div>
+          <div class="alert alert-success" role="alert" *ngIf="status == 'ok' && message">
+            {{message}}
+          </div>
+          <div class="alert alert-success" role="alert" *ngIf="status == 'activada' && message">
+              {{message}}<a href="" [routerLink]="['/login']"> Acá</a>
+            </div>
+          <div class="separador-10"></div>
+          <div *ngIf="!identity">
+            <form action="" #sendTokenForm="ngForm" (ngSubmit)="onSubmit(sendTokenForm)">
+              <div class="form-group-login">
+                <label for="mail" class="">Email</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Ingresa tu email" aria-describedby="basic-addon1" name="mail" #mail="ngModel"
+                    [(ngModel)]="email" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+                </div>
+                <span [hidden]="mail.valid || mail.pristine" class="text-danger">
+                  <span [hidden]="!mail.hasError('required')">Email es requerido</span>
+                  <span [hidden]="!mail.hasError('pattern')">El formato del email debe ser
+                    <small>
+                      <b>joe@abc.com</b>
+                    </small>
+                  </span>
+                </span>
+              </div>
+              <input type="submit" class="btn btn-primary btn-md btn-block btn-entrar separador-10" value="Enviar Codigo de Activacion" [disabled]="!sendTokenForm.form.valid"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,26 @@
+<div class="body-login">
+  <div class="container">
+    <div class="row">
+      <div class="main-login col-sm-12">
+        <div class="logo-login text-center"></div>
+        <div class="titulo-login text-center">
+          <span>VERIFICACION DE CUENTA</span>
+        </div>
+        <div class="NoVerificado" *ngIf="status == 'No verificado' && message">
+          <div class="alert alert-danger" role="alert">
+            {{message}}
+          </div>
+          <a href="" [routerLink]="['/enviar-codigo']" class="btn btn-primary btn-md btn-block btn-entrar">Reenviar Email</a>
+        </div>
+        <div class="separador-10"></div>
+        <div class="Verificado" *ngIf="status == 'verificado' && message">
+          <div class="alert alert-success" role="alert">
+            {{message}}.
+          </div>
+          <a href="" [routerLink]="['/login']" class="btn btn-primary btn-md btn-block btn-entrar">Iniciar Sesion</a>
+        </div>
+        <div class="separador-10"></div>
+      </div>
+    </div>
+  </div>
+</div>

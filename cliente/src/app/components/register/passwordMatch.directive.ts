@@ -11,7 +11,7 @@ export class EqualValidator implements Validator {
   constructor( @Attribute('validateEqual') public validateEqual: string,
     @Attribute('reverse') public reverse: string) {
 
-    console.log('Sono in validator');
+    // console.log('Sono in validator');
   }
 
   private get isReverse() {

@@ -7,6 +7,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { MisDatosComponent } from './components/mis-datos/mis-datos.component';
 import { EditarMisdatosComponent } from './components/editar-misdatos/editar-misdatos.component';
+import { TokenConfirmationComponent } from './components/token-confirmation/token-confirmation.component';
+import { TokenResendComponent } from './components/token-resend/token-resend.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -15,6 +17,8 @@ const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'mis-datos', component: MisDatosComponent },
     { path: 'editar-datos', component: EditarMisdatosComponent },
+    { path: 'confirmar-cuenta/:token', component: TokenConfirmationComponent},
+    { path: 'enviar-codigo', component: TokenResendComponent},
     { path: '**', component: HomeComponent }
 ];
 

@@ -34,5 +34,7 @@ app.use(function (req, res, next) {
 
 // rutas bases - body-parser
 app.use('/api', userRoutes); // para que todas las url de nuestra api precedan de /api.
+// app.post('/confirmation', userController.confirmationPost); // Esta es para confirmar el email
+// app.post('/resend', userController.resendTokenPost); // Esta es para renviar el token en caso de ser necesario. 
 
 module.exports = app;

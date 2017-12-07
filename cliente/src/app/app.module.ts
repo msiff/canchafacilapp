@@ -28,6 +28,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { MisDatosComponent } from './components/mis-datos/mis-datos.component';
 import { EditarMisdatosComponent } from './components/editar-misdatos/editar-misdatos.component';
+import { TokenConfirmationComponent } from './components/token-confirmation/token-confirmation.component';
+import { TokenResendComponent } from './components/token-resend/token-resend.component';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import { EditarMisdatosComponent } from './components/editar-misdatos/editar-mis
     RegisterComponent,
     MisDatosComponent,
     EditarMisdatosComponent,
-    EqualValidator
+    EqualValidator,
+    TokenConfirmationComponent,
+    TokenResendComponent
   ],
   imports: [
     BrowserModule,

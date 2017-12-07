@@ -8,6 +8,7 @@
         </div>
         <div class="alert alert-danger" role="alert" *ngIf=" status == 'error' ">
           {{message}}
+          <label *ngIf=" type == 'No verificado'">Si no recibiste el email click <a href="" [routerLink]="['/enviar-codigo']">Acá</a></label>
         </div>
         <div class="separador-10"></div>
         <div class="alert alert-success" role="alert" *ngIf="identity">
@@ -55,6 +56,7 @@
           <div class="separador-10"></div>
           <a href="" [routerLink]="['/register']">Registrate ahora!</a>
           <a href="" style="float:right">Recuperar contraseña</a>
+          <a href="" style="float:right"[routerLink]="['/enviar-codigo']">Reenviar mail de activación</a>
         </div>
       </div>
     </div>

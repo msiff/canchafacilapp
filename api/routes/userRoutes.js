@@ -20,6 +20,8 @@ api.post('/loginFacebook', userController.loginFacebook);
 api.put('/update-user/:id', midAuth.ensureAuth, userController.updateUser);
 api.post('/upload-image-user/:id',[ midAuth.ensureAuth, midUpload ], userController.uploadImage);
 api.get('/get-image-user/:imageFile', userController.getImage);
+api.post('/confirmation/:token', userController.tokenConfirmation);
+api.post('/resend-token/:email', userController.resendEmailToken);
 // api.get('/get-cuidadores', userController.getCuidadores);
 
 module.exports = api;

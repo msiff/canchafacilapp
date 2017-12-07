@@ -11,7 +11,9 @@
         </div>
         <div class="separador-10"></div>
         <div class="alert alert-success" role="alert" *ngIf="status == 'ok' && message">
-          <strong>Registro completo! </strong>Puedes iniciar sesion <a href="" class="alert-link" [routerLink]="['/login']">Aquí</a>.
+            {{message}}
+            <p>Si no recibiste el email click <a href="" [routerLink]="['/enviar-codigo']">Acá</a></p>
+          <!-- <strong>Registro completo! </strong>Puedes iniciar sesion <a href="" class="alert-link" [routerLink]="['/login']">Aquí</a>. -->
           <!-- <span>Se registro correctamente, puede iniciar sesion </span>
           <a href="" [routerLink]="['/login']">Acá</a> -->
         </div>
@@ -59,10 +61,11 @@
               <label for="password" class="">Contraseña</label>
               <div class="input-group">
                 <input type="password" class="form-control" placeholder="Ingresa tu contraseña" aria-describedby="basic-addon1" name="password"
-                  #password="ngModel" [(ngModel)]="user.password" required validateEqual="confirmPassword" reverse="true">
+                  #password="ngModel" [(ngModel)]="user.password" required validateEqual="confirmPassword" reverse="true" minlength="4">
               </div>
               <span [hidden]="password.valid || password.pristine" class="text-danger">
-                <span [hidden]="!email.hasError('required')">Contraseña es requerido</span>
+                <span [hidden]="!password.hasError('required')">Contraseña es requerido</span>
+                <span [hidden]="!password.hasError('minlength')">La contraseña debe tener un minimo de 4 caracteres</span>
               </span>
             </div>
             <div class="form-group-login separador-10">
@@ -86,6 +89,7 @@
           <div class="separador-10"></div>
           <a href="" [routerLink]="['/login']">Ya tienes cuenta?</a>
           <a href="" style="float:right">Recuperar contraseña</a>
+          <a href="" style="float:right"[routerLink]="['/enviar-codigo']">Reenviar mail de activación</a>
         </div>
       </div>
     </div>

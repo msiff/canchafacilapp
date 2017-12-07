@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit, DoCheck {
   public token; // token para enviar en las peticiones http.
   public status; // sirve para darle estilo al alert.
   public message; // lleva el mensaje del alert.
+  public type; // Obtiene el tipo de error que devuelve la API. En este caso manejamos solo No verificado en el user.
   public data; // datos del usuario que nos devuelve la api de facebook.
   private userSocial: SocialUser;
   private loggedIn: boolean;
@@ -115,6 +116,9 @@ export class LoginComponent implements OnInit, DoCheck {
           const body = JSON.parse(err._body);
           this.message = body.message;
           this.status = 'error';
+          if (body.type) {
+            this.type = body.type;
+          }
         }
       }
     );

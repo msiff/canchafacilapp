@@ -35,7 +35,7 @@ export class UserService {
     loginFacebook(data) {
         const params = JSON.stringify(data);
         const headers = new Headers({ 'Content-Type': 'application/json' });
-        const options = new RequestOptions({headers: headers});
+        const options = new RequestOptions({ headers: headers });
 
         return this._http.post(this.url + 'loginFacebook', params, options).map(res => res.json());
     }
@@ -62,10 +62,24 @@ export class UserService {
 
     updateUser(user_to_update) {
         const params = JSON.stringify(user_to_update);
-        const headers = new Headers({'Content-Type': 'application/json', 'Authorization': this.getToken() });
+        const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.getToken() });
 
-        return this._http.put(this.url + 'update-user/' + user_to_update._id, params, {headers: headers})
-                         .map( res => res.json());
+        return this._http.put(this.url + 'update-user/' + user_to_update._id, params, { headers: headers })
+            .map(res => res.json());
+    }
+
+    tokenConfirmation(token) {
+        const params = JSON.stringify(token);
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        return this._http.post(this.url + 'confirmation/' + token, { headers: headers })
+            .map(res => res.json());
+    }
+
+    resendToken(email) {
+        // const params = JSON.stringify(email);
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        return this._http.post(this.url + 'resend-token/' + email, { headers: headers })
+            .map(res => res.json());
     }
 
 }

@@ -5,12 +5,15 @@ var bcrypt = require('bcrypt-nodejs');
 var fs = require('fs');
 var path = require('path');
 var Jimp = require('jimp');
+var crypto = require('crypto'); // no hay que instalarlo por npm
+var nodemailer = require('nodemailer');
 
 // Servicios
 var jwt = require('../services/jwt');
 
 // Modelos
 var User = require('../models/userModel');
+var EmailToken = require('../models/emailTokenModel');
 
 // Acciones
 // Por cada modelo creo un controlador el cual se va a encargar de realizar las funciones.
@@ -31,9 +34,10 @@ function registrarUser(req, res) {
         user.name = params.name;
         user.surname = params.surname;
         user.email = params.email;
-        user.role = 'client';
-        user.image = 'Null';
-        user.photoUrl = 'Null';
+        user.image = 'profile.png';
+        // user.role = 'client';
+        // user.image = 'Null';
+        // user.photoUrl = 'Null';
         // En estas sentencias preguntamos el rol del usuario para asignar propiedades que dependen si es
         // client o owner.
         if (user.role == 'client') {
@@ -92,15 +96,58 @@ function registrarUser(req, res) {
                                     message: "Error al registrar el usuario"
                                 });
                             } else {
-                                res.status(200).send({
-                                    user: userStored
+                                // Creo un objeto que contiene el id del usuario, un token y una fecha de expiracion y lo guardo.
+                                var emailtoken = new EmailToken({
+                                    _userId: user._id,
+                                    token: crypto.randomBytes(16).toString('hex')
+                                });
+                                emailtoken.save((err, emailTokenStored) => {
+                                    if (err) {
+                                        return res.status(404).send({
+                                            message: "Error al crear el usuario."
+                                        });
+                                    } else {
+                                        // Envio el mensaje que la cuenta se creo correctamente aca y no cuando el mail se envio y salio todo correcto porque demora unos segundos.
+                                        // De aca en adelante lo que puede fallar es el tema del email con el link para activar cuenta!.
+                                        res.status(200).send({
+                                            type: "ok",
+                                            message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + user.email + '.'
+                                        });
+                                        // Send the email, corregir los datos para usar el email de cancha facil y la ruta a la api.
+                                        var transporter = nodemailer.createTransport({
+                                            service: 'gmail',
+                                            auth: {
+                                                user: 'cmiguelsiffredo@gmail.com',
+                                                pass: 'miguel13314'
+                                            }
+                                        });
+                                        var mailOptions = {
+                                            from: 'Cancha Facil',
+                                            to: userStored.email,
+                                            subject: 'Bienvenido a Cancha Facil! Activa tu cuenta.',
+                                            // ext: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + token.token + '.\n'
+                                            // ext: 'Hola!,\n\n' + 'Por favor verifica tu cuenta haciendo click en el siguiente link: \nhttp:\/\/' + 'localhost:5200/' + '\/confirmation\/' + emailTokenStored.token + '.\n',
+                                            html: '<p>Hola!</p><p>Por favor confirma tu cuenta para poder utilizar Cancha Facil.</p><p>Haz click en el siguiente enlace: http://localhost:4200/confirmar-cuenta/' + emailTokenStored.token + '</p>'
+                                        };
+                                        transporter.sendMail(mailOptions, function (err) {
+                                            if (err) {
+                                                return res.status(404).send({
+                                                    message: "Error al crear el usuario."
+                                                });
+                                            }
+                                            res.status(200).send({
+                                                type: "ok",
+                                                message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + user.email + '.'
+                                            });
+                                        });
+                                    }
                                 });
                             }
                         }
                     });
                 } else {
                     res.status(200).send({
-                        message: "El usuario no puede registrarse porque ese email esta en uso"
+                        message: "La dirección de correo electronico que has puesto ya está asociada a otra cuenta."
                     });
                 }
             }
@@ -133,15 +180,20 @@ function loginUser(req, res) {
                         // Comprobar si se requiere el token y generar
                         if (params.gettoken) {
                             // Devolver token jwt
-                            res.status(200).send({
+                            return res.status(200).send({
                                 token: jwt.createToken(user)
                             });
-                        } else {
-                            // Devolver datos de usuario
-                            res.status(200).send({
-                                user
+                        }
+                        if (!user.isVerified) {
+                            return res.status(404).send({
+                                type: "No verificado",
+                                message: "Tu cuenta aun no ah sido verificada, revisa tu email con el link de confirmacion."
                             });
                         }
+                        // Devolver datos de usuario
+                        res.status(200).send({
+                            user
+                        });
                     } else {
                         res.status(404).send({
                             message: "Contrasena incorrecta"
@@ -205,12 +257,10 @@ function loginFacebook(req, res) {
                                     newUser.name = params.name;
                                     newUser.surname = '';
                                     newUser.email = params.email;
-                                    newUser.role = 'client';
-                                    newUser.image = 'Null';
+                                    //newUser.role = 'client';
+                                    //newUser.image = 'Null';
                                     if (params.photoUrl) {
                                         newUser.photoUrl = params.photoUrl;
-                                    } else {
-                                        newUser.photoUrl = 'Null';
                                     }
                                     // En estas sentencias preguntamos el rol del usuario para asignar propiedades que dependen si es
                                     // client o owner.
@@ -226,6 +276,7 @@ function loginFacebook(req, res) {
                                         newUser.clientData.asistencias = 0;
                                         newUser.clientData.celular = '';
                                     }
+                                    newUser.isVerified = true;
                                     newUser.providers.facebook.uid = params.id;
                                     // Guardar el usuario en la BD.
                                     newUser.save((err, userStored) => {
@@ -350,8 +401,14 @@ function uploadImage(req, res) {
                             message: 'No se ah podido actualizar la imagen'
                         });
                     } else {
-                        // Aca se concatena la ruta y se le agrega el nombde de la imagen vieja, recordar que el userU es el viejo.
-                        var borrar = './uploads/users/' + userUpdated.image;
+                        // Aca se concatena la ruta y se le agrega el nombde de la imagen vieja, recordar que el userU es el viejo. 
+                        // Por defecto asignamos una imagen de perfil, aca vamos a asignar null si la imagen es esa por defecto, ya
+                        // que si no la va a eliminar y es usada por todos los usuarios al principio.
+                        var imagenABorrar = null;
+                        if (userUpdated.image != 'profile.png') {
+                            imagenABorrar = userUpdated.image;
+                        }
+                        var borrar = './uploads/users/' + imagenABorrar;
                         fs.unlink(borrar, (err) => {
                             if (err) {
                                 res.status(200).send({
@@ -408,6 +465,141 @@ function getImage(req, res) {
     });
 }
 
+function tokenConfirmation(req, res) {
+    var tokenn = req.params.token;
+    if (tokenn == null) {
+        return res.status(404).send({
+            type: 'No verificado',
+            message: 'Error al verificar la cuenta, intente nuevamente.'
+        });
+    } else {
+        // Find a matching token
+        EmailToken.findOne({
+            token: tokenn
+        }, function (err, token) {
+            if (err) return res.status(400).send({
+                type: 'No verificado',
+                message: 'No podemos activar la cuenta. Error en el servidor, intente nuevamente.'
+            });
+            if (!token) return res.status(400).send({
+                type: 'No verificado',
+                message: 'No podemos activar la cuenta. Quizas haya expirado el tiempo para la activacion.'
+            });
+            // If we found a token, find a matching user
+            User.findOne({
+                _id: token._userId
+            }, function (err, user) {
+                if (err) return res.status(400).send({
+                    type: 'No verificado',
+                    message: 'No podemos activar la cuenta. Error en el servidor, intente nuevamente.'
+                });
+                if (!user) return res.status(400).send({
+                    type: 'No verificado',
+                    message: 'No podemos encontrar un usuario para esta activacion.'
+                });
+                if (user.isVerified) return res.status(400).send({
+                    type: 'verificado',
+                    message: 'Este usuario ya fue verificado.'
+                });
+                // Verify and save the user
+                user.isVerified = true;
+                user.save(function (err) {
+                    if (err) {
+                        return res.status(500).send({
+                            type: 'No verificado',
+                            message: 'No podemos verificar el usuario, intenta nuevamente.'
+                        });
+                    }
+                    res.status(200).send({
+                        type: 'verificado',
+                        message: 'Cuenta activada correctamente! Ya puedes utilizar Cancha Facil.'
+                    });
+                });
+            });
+        });
+    }
+}
+
+function resendEmailToken(req, res) {
+    // Funcion para rernviar un token de actvacion de cuenta. Esto recibe un email por parametros y comprueba si hay un usuario sin verificar con ese email
+    // en caso correcto genera un nuevo token y lo envia al email del usuario. 
+    var emaill = req.params.email;
+    if (emaill == null) {
+        return res.status(404).send({
+            type: 'error',
+            message: 'Error al enviar codigo de activacion, intente nuvamente.'
+        });
+    } else {
+        User.findOne({
+            email: emaill
+        }, function (err, user) {
+            if (err) {
+                return res.status(500).send({
+                    type: 'error',
+                    message: 'Error al enviar codigo de activacion, intente nuevamente.'
+                });
+            } else {
+                if (!user) return res.status(400).send({
+                    type: 'error',
+                    message: 'No podemos encontrar una cuenta con ese email, comprueba que has escrito correctamente.'
+                });
+                if (user.isVerified) return res.status(200).send({
+                    type: 'activada',
+                    message: 'Esta cuenta ya esta activada, puedes Iniciar Sesion'
+                });
+                // creamos un nuevo token, lo guardamos en la bd y enviamos link por correo para la activacion.
+                var emailtoken = new EmailToken({
+                    _userId: user._id,
+                    token: crypto.randomBytes(16).toString('hex')
+                });
+                emailtoken.save(function (err, emailTokenStored) {
+                    if (err) {
+                        return res.status(500).send({
+                            type: 'error',
+                            message: 'Error al enviar codigo de activacion, intente nuvamente.'
+                        });
+                    } else {
+                        // Envio el res aca y no mas adelante para que no demore en mostrar una respuesta en el front, enviar el mail lleva unos segundos.
+                        // Puede fallar y que no se envie el mail.
+                        res.status(200).send({
+                            type: "ok",
+                            message: 'Se envio un correo para activar la cuenta a: ' + user.email + '.'
+                        });
+                        var transporter = nodemailer.createTransport({
+                            service: 'gmail',
+                            auth: {
+                                user: 'cmiguelsiffredo@gmail.com',
+                                pass: 'miguel13314'
+                            }
+                        });
+                        var mailOptions = {
+                            from: 'Cancha Facil',
+                            to: user.email,
+                            subject: 'Bienvenido a Cancha Facil! Activa tu cuenta.',
+                            // ext: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + token.token + '.\n'
+                            // ext: 'Hola!,\n\n' + 'Por favor verifica tu cuenta haciendo click en el siguiente link: \nhttp:\/\/' + 'localhost:5200/' + '\/confirmation\/' + emailTokenStored.token + '.\n',
+                            html: '<p>Hola!</p><p>Por favor confirma tu cuenta para poder utilizar Cancha Facil.</p><p>Haz click en el siguiente enlace: http://localhost:4200/confirmar-cuenta/' + emailTokenStored.token + '</p>'
+                        };
+                        transporter.sendMail(mailOptions, function (err) {
+                            if (err) {
+                                return res.status(404).send({
+                                    type: 'error',
+                                    message: "Error al enviar link de activacion, intenta nuevamente."
+                                });
+                            }
+                            res.status(200).send({
+                                type: "ok",
+                                message: 'Se envio un correo para activar la cuenta a: ' + user.email + '.'
+                            });
+                        });
+                    }
+
+                });
+            }
+        });
+    }
+}
+
 function getCuidadores(req, res) {
     User.find({
         role: 'ROLE_ADMIN'
@@ -438,5 +630,6 @@ module.exports = {
     updateUser,
     uploadImage,
     getImage,
-    getCuidadores
+    tokenConfirmation,
+    resendEmailToken
 };

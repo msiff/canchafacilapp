@@ -7,11 +7,12 @@ var schema = mongoose.Schema;
 var User = schema({
     name: String,
     surname: String,
-    email: String,
+    email: {type: String, unique: true},
+    isVerified: { type: Boolean, default: false },
     password: String,
     role: { type: String, enum: ['client', 'owner', 'admin'], default: 'client'},
-    image: String, // Esta es la foto local
-    photoUrl: String, // Esta foto es la de facebook
+    image: {type: String, default: 'Null'}, // Esta es la foto local
+    photoUrl: {type: String, default: 'Null'}, // Esta foto es la de facebook
     clientData: { complejosFav: [String], confiabilidad: Number, asistencias: Number, celular: String},
     ownerData: { misComplejos: [String] },
     providers: {facebook: {uid: String} }
