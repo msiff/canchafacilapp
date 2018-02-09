@@ -16,7 +16,9 @@ const CONFIG = new AuthServiceConfig([{
 export function provideConfig() {
   return CONFIG;
 }
-///////
+
+// Modulos Personales
+import { AdminModule } from './admin/admin.module';
 
 // Rutas
 import { routing, appRoutingProviders } from './app.routing';
@@ -31,7 +33,6 @@ import { EditarMisdatosComponent } from './components/editar-misdatos/editar-mis
 import { TokenConfirmationComponent } from './components/token-confirmation/token-confirmation.component';
 import { TokenResendComponent } from './components/token-resend/token-resend.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,14 +43,15 @@ import { TokenResendComponent } from './components/token-resend/token-resend.com
     EditarMisdatosComponent,
     EqualValidator,
     TokenConfirmationComponent,
-    TokenResendComponent
+    TokenResendComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     SocialLoginModule,
-    routing
+    routing,
+    AdminModule
   ],
   providers: [appRoutingProviders, { provide: AuthServiceConfig, useFactory: provideConfig}],
   bootstrap: [AppComponent]

@@ -19,6 +19,7 @@ const routes: Routes = [
     { path: 'editar-datos', component: EditarMisdatosComponent },
     { path: 'confirmar-cuenta/:token', component: TokenConfirmationComponent},
     { path: 'enviar-codigo', component: TokenResendComponent},
+    // { path: 'admin-panel', component: AdminPanelComponent},
     { path: '**', component: HomeComponent }
 ];
 

@@ -29,7 +29,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               <li>
-                <a class="dropdown-item pointer" [routerLink]="['/admin-panel']" *ngIf="identity && identity.role == 'ROLE_ADMIN' ">Administracion</a>
+                <a class="dropdown-item pointer" [routerLink]="['/admin-panel']" *ngIf="identity && identity.role == 'admin' ">Administracion</a>
               </li>
               <li>
                 <a class="dropdown-item pointer" [routerLink]="['/mis-datos']">Mis Datos</a>
