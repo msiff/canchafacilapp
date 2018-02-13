@@ -1,6 +1,7 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 
+
 // Login social
 import { AuthService } from 'ng4-social-login';
 import { SocialUser } from 'ng4-social-login';

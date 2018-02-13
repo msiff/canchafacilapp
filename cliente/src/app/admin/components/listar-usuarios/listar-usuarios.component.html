@@ -1,35 +1,28 @@
-<div class="table-responsive-md">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Apellido</th>
-        <th scope="col">Email</th>
-        <th scope="col">Telefono</th>
-        <th scope="col">Rol</th>
-        <th scope="col">Verificado</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>099441504</td>
-        <td>Cliente</td>
-        <td>Si</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>099441504</td>
-        <td>Cliente</td>
-        <td>Si</td>
-      </tr>
+<div class="table-responsive-sm">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Telefono</th>
+          <th>Rol</th>
+          <th>Verificado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{user.name}}</td>
+          <td>{{user.surname}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.celular}}</td>
+          <td *ngIf="user.role === 'admin'" >Admin</td>
+          <td *ngIf="user.role === 'client'" >Cliente</td>
+          <td *ngIf="user.role === 'owner'" >Dueño</td>
+          <td *ngIf="user.isVerified === true " >Si</td>
+          <td *ngIf="user.isVerified === false " >No</td>
+        </tr>
       </tbody>
-  </table>
-</div>
+    </table>
+  </div>
+

@@ -10,10 +10,11 @@ var User = schema({
     email: {type: String, unique: true},
     isVerified: { type: Boolean, default: false },
     password: String,
+    celular: {type: String, default: ''},
     role: { type: String, enum: ['client', 'owner', 'admin'], default: 'client'},
     image: {type: String, default: 'Null'}, // Esta es la foto local
     photoUrl: {type: String, default: 'Null'}, // Esta foto es la de facebook
-    clientData: { complejosFav: [String], confiabilidad: Number, asistencias: Number, celular: String},
+    clientData: { complejosFav: [String], confiabilidad: Number, asistencias: Number},
     ownerData: { misComplejos: [String] },
     providers: {facebook: {uid: String} }
 

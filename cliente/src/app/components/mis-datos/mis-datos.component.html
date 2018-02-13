@@ -15,14 +15,14 @@
         <p>
           <span>{{user.email}}</span>
         </p>
-        <div *ngIf="user.clientData.celular == '' ">
+        <div *ngIf="user.celular == '' ">
           <p>
             <span style="color:Red">*Recomendamos ingresar un telefono para mejor comunicacion</span>
           </p>
         </div>
-        <div *ngIf="user.clientData.celular != '' ">
+        <div *ngIf="user.celular != '' ">
           <p>
-            <span>{{user.clientData.celular}}</span>
+            <span>{{user.celular}}</span>
           </p>
         </div>
         <button class="btn btn-primary" (click)="editarDatos()">Editar Mis Datos</button>

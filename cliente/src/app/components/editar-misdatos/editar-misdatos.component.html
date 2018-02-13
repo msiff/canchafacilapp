@@ -39,8 +39,8 @@
       </p>
       <p>
         <label for="celular">Celular</label>
-        <input type="number" name="celular" #celular="ngModel" [(ngModel)]="user.clientData.celular" class="form-control" pattern="[0-9]{8,}">
-        <span *ngIf="user.clientData.celular == '' || user.clientData.celular == null " style="font-size: 12px; color: Red">*Recomendamos ingresar un numero de celular</span>
+        <input type="string" name="celular" #celular="ngModel" [(ngModel)]="user.celular" class="form-control" pattern="[0-9]{8,}">
+        <span *ngIf="user.celular == '' || user.celular == null " style="font-size: 12px; color: Red">*Recomendamos ingresar un numero de celular</span>
         <span [hidden]="!celular.hasError('pattern')" style="font-size: 12px; color: Red">El celular debe tener por lo menos 9 digitos. Ej:099123123</span>
       </p>
       <div>

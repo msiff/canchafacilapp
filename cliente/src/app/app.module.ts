@@ -9,6 +9,7 @@ import { EqualValidator } from './components/register/passwordMatch.directive';
 
 // Social Login
 import { SocialLoginModule, AuthServiceConfig, FacebookLoginProvider } from 'ng4-social-login';
+// mport { } from 'ng4-social-login';
 const CONFIG = new AuthServiceConfig([{
   id: FacebookLoginProvider.PROVIDER_ID,
   provider: new FacebookLoginProvider('163872397683863')

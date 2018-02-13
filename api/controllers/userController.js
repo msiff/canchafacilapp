@@ -10,6 +10,7 @@ var nodemailer = require('nodemailer');
 
 // Servicios
 var jwt = require('../services/jwt');
+var mailer = require('../services/mailer');
 
 // Modelos
 var User = require('../models/userModel');
@@ -45,8 +46,7 @@ function registrarUser(req, res) {
             user.clientData = {
                 complejosFav: [],
                 confiabilidad: Number,
-                asistencias: Number,
-                celular: String
+                asistencias: Number
             };
             user.clientData.confiabilidad = 0;
             user.clientData.asistencias = 0;
@@ -96,7 +96,7 @@ function registrarUser(req, res) {
                                     message: "Error al registrar el usuario"
                                 });
                             } else {
-                                // Creo un objeto que contiene el id del usuario, un token y una fecha de expiracion y lo guardo.
+                                // Creo un objeto que contiene el id del usuario, un token y una fecha de expiracion(se asigna automatico en el modelo.) y lo guardo.
                                 var emailtoken = new EmailToken({
                                     _userId: user._id,
                                     token: crypto.randomBytes(16).toString('hex')
@@ -113,32 +113,20 @@ function registrarUser(req, res) {
                                             type: "ok",
                                             message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + user.email + '.'
                                         });
-                                        // Send the email, corregir los datos para usar el email de cancha facil y la ruta a la api.
-                                        var transporter = nodemailer.createTransport({
-                                            service: 'gmail',
-                                            auth: {
-                                                user: 'cmiguelsiffredo@gmail.com',
-                                                pass: 'miguel13314'
-                                            }
-                                        });
-                                        var mailOptions = {
-                                            from: 'Cancha Facil',
-                                            to: userStored.email,
-                                            subject: 'Bienvenido a Cancha Facil! Activa tu cuenta.',
-                                            // ext: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + token.token + '.\n'
-                                            // ext: 'Hola!,\n\n' + 'Por favor verifica tu cuenta haciendo click en el siguiente link: \nhttp:\/\/' + 'localhost:5200/' + '\/confirmation\/' + emailTokenStored.token + '.\n',
-                                            html: '<p>Hola!</p><p>Por favor confirma tu cuenta para poder utilizar Cancha Facil.</p><p>Haz click en el siguiente enlace: http://localhost:4200/confirmar-cuenta/' + emailTokenStored.token + '</p>'
-                                        };
-                                        transporter.sendMail(mailOptions, function (err) {
-                                            if (err) {
+                                        // En el servicio mailer, estan las funciones par enviar mails, en este caso paso el mail al que enviar y el token de activacion, la funcion
+                                        // crea el mail y lo envia. Devuelve ok si sale bien o err en caso contrario. El tema es que demora unos segundos en salir el email, por eso 
+                                        // se informa al usuario que salio bien antes de enviar el email. En caso que al usuario no le llegue mail puede solicitarlo de nuevo.
+                                        mailer.emailBienvenida(userStored.email, emailTokenStored.token, (err) => {
+                                            if (err.type == 'err') {
                                                 return res.status(404).send({
                                                     message: "Error al crear el usuario."
                                                 });
+                                            } else {
+                                                res.status(200).send({
+                                                    type: "ok",
+                                                    message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + user.email + '.'
+                                                });
                                             }
-                                            res.status(200).send({
-                                                type: "ok",
-                                                message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + user.email + '.'
-                                            });
                                         });
                                     }
                                 });
@@ -521,7 +509,7 @@ function tokenConfirmation(req, res) {
 }
 
 function resendEmailToken(req, res) {
-    // Funcion para rernviar un token de actvacion de cuenta. Esto recibe un email por parametros y comprueba si hay un usuario sin verificar con ese email
+    // Funcion para reenviar un token de actvacion de cuenta. Esto recibe un email por parametros y comprueba si hay un usuario sin verificar con ese email
     // en caso correcto genera un nuevo token y lo envia al email del usuario. 
     var emaill = req.params.email;
     if (emaill == null) {
@@ -565,32 +553,17 @@ function resendEmailToken(req, res) {
                             type: "ok",
                             message: 'Se envio un correo para activar la cuenta a: ' + user.email + '.'
                         });
-                        var transporter = nodemailer.createTransport({
-                            service: 'gmail',
-                            auth: {
-                                user: 'cmiguelsiffredo@gmail.com',
-                                pass: 'miguel13314'
-                            }
-                        });
-                        var mailOptions = {
-                            from: 'Cancha Facil',
-                            to: user.email,
-                            subject: 'Bienvenido a Cancha Facil! Activa tu cuenta.',
-                            // ext: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + token.token + '.\n'
-                            // ext: 'Hola!,\n\n' + 'Por favor verifica tu cuenta haciendo click en el siguiente link: \nhttp:\/\/' + 'localhost:5200/' + '\/confirmation\/' + emailTokenStored.token + '.\n',
-                            html: '<p>Hola!</p><p>Por favor confirma tu cuenta para poder utilizar Cancha Facil.</p><p>Haz click en el siguiente enlace: http://localhost:4200/confirmar-cuenta/' + emailTokenStored.token + '</p>'
-                        };
-                        transporter.sendMail(mailOptions, function (err) {
-                            if (err) {
+                        mailer.reenviarToken(user.email, emailTokenStored.token, (err) => {
+                            if (err.type == 'err') {
                                 return res.status(404).send({
-                                    type: 'error',
-                                    message: "Error al enviar link de activacion, intenta nuevamente."
+                                    message: "Error al enviar mail."
+                                });
+                            } else {
+                                res.status(200).send({
+                                    type: "ok",
+                                    message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + user.email + '.'
                                 });
                             }
-                            res.status(200).send({
-                                type: "ok",
-                                message: 'Se envio un correo para activar la cuenta a: ' + user.email + '.'
-                            });
                         });
                     }
 
@@ -598,48 +571,6 @@ function resendEmailToken(req, res) {
             }
         });
     }
-}
-
-function getCuidadores(req, res) {
-    User.find({
-        role: 'ROLE_ADMIN'
-    }).exec((err, users) => {
-        if (err) {
-            res.status(500).send({
-                message: 'Error en la peticion!'
-            });
-        } else {
-            if (!users) {
-                res.status(404).send({
-                    message: 'No hay cuidadores'
-                });
-            } else {
-                res.status(200).send({
-                    users
-                });
-            }
-        }
-    });
-}
-
-function getUsers(req, res) {
-    User.find({}, err, users => {
-        if (err) {
-            res.status(500).send({
-                message: 'Error en la peticion!'
-            });
-        } else {
-            if (!users) {
-                res.status(404).send({
-                    message: 'No hay usuarios!'
-                });
-            } else {
-                res.status(200).send({
-                    users
-                });
-            }
-        }
-    });
 }
 
 module.exports = {
@@ -651,5 +582,5 @@ module.exports = {
     uploadImage,
     getImage,
     tokenConfirmation,
-    resendEmailToken
+    resendEmailToken,
 };

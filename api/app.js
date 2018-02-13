@@ -7,6 +7,7 @@ var app = express(); // carga el framework de express
 
 // cargar rutas
 var userRoutes = require('./routes/userRoutes');
+var adminRoutes = require('./routes/adminRoutes');
 
 // middlewares de body-parser
 app.use(bodyParser.urlencoded({ extended: false })); // Config necesaria para usar bodyP.
@@ -33,7 +34,7 @@ app.use(function (req, res, next) {
 });
 
 // rutas bases - body-parser
-app.use('/api', userRoutes); // para que todas las url de nuestra api precedan de /api.
+app.use('/api', userRoutes, adminRoutes); // para que todas las url de nuestra api precedan de /api.
 // app.post('/confirmation', userController.confirmationPost); // Esta es para confirmar el email
 // app.post('/resend', userController.resendTokenPost); // Esta es para renviar el token en caso de ser necesario. 
 

@@ -22,6 +22,6 @@ api.post('/upload-image-user/:id',[ midAuth.ensureAuth, midUpload ], userControl
 api.get('/get-image-user/:imageFile', userController.getImage);
 api.post('/confirmation/:token', userController.tokenConfirmation);
 api.post('/resend-token/:email', userController.resendEmailToken);
-// api.get('/get-cuidadores', userController.getCuidadores);
+//api.get('/get-users',midAuth.ensureAuth, userController.getUsers);
 
 module.exports = api;

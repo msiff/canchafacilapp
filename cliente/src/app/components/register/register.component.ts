@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit, DoCheck {
 
   constructor(private _route: ActivatedRoute, private _router: Router, private _userService: UserService,
     private _authService: AuthService) {
-    this.user = new User('', '', '', '', '', 'client', '', '', '', '', '');
+    this.user = new User('', '', '', '', '', '', '', 'client', '', false, '', '', '');
   }
 
   ngOnInit() {
@@ -81,7 +81,7 @@ export class RegisterComponent implements OnInit, DoCheck {
           // Esto resetea el formulario solo si el usuario se crea correctamente, para eso en
           // el ngSubmit debemos pasar el formulario para pdoer hacerlo desde aca al reset.
           registerForm.reset();
-          this.user = new User('', '', '', '', '', 'client', '', '', '', '', '');
+          this.user = new User('', '', '', '', '', '', '', 'client', '', false, '', '', '');
         } else {
           this.message = response.message;
           this.status = 'error';
