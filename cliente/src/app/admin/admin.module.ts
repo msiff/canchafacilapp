@@ -11,16 +11,21 @@ import { ListarComplejosComponent } from './components/listar-complejos/listar-c
 // Rutas
 import { AdminRoutingModule } from './admin.routing';
 
+// Pipes
+import { SearchPipe } from './pipes/search.pipe';
+
 
 @NgModule({
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    FormsModule
   ],
   declarations: [
     ListarUsuariosComponent,
     MainComponent,
-    ListarComplejosComponent
+    ListarComplejosComponent,
+    SearchPipe
   ]
 })
 export class AdminModule { }

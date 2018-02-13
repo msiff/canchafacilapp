@@ -20,6 +20,8 @@ export class ListarUsuariosComponent implements OnInit {
   public users =  new Array<User>();
   public status;
   public message;
+  public busqueda;
+  public key = 'name';
 
   constructor(private _adminService: AdminService) {
     this.identity = this._adminService.getIdentity();
