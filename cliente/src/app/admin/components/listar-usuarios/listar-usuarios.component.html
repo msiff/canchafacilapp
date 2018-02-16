@@ -1,22 +1,26 @@
-    <form class="form-inline separador-10">
-        <label class="mr-sm-2" for="inlineFormCustomSelect">Buscar por:  </label>
-        <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect" [(ngModel)]="key" [ngModelOptions]="{standalone: true}">
-          <option value="name">Nombre</option>
-            <option value="surname">Apellido</option>
-            <option value="email">Email</option>
-        </select>
-        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-          <input type="text" class="form-control" id="inlineFormCustomSelect" placeholder="Busqueda.." [(ngModel)]="busqueda" [ngModelOptions]="{standalone: true}">
-        </div>
-    
-      </form>
-    <div class="col-12 separador-10" *ngIf="busqueda">
-        <label for="">Termino de busqueda: <strong>{{busqueda}}</strong></label>
+<div class="wrapperUsers">
+  <form class="form-inline ">
+    <label class="mr-sm-2" for="inlineFormCustomSelect">Buscar por: </label>
+    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect" [(ngModel)]="key" [ngModelOptions]="{standalone: true}">
+      <option value="name">Nombre</option>
+      <option value="surname">Apellido</option>
+      <option value="email">Email</option>
+    </select>
+    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+      <input type="text" class="form-control" id="inlineFormCustomSelect" placeholder="Busqueda.." [(ngModel)]="busqueda" [ngModelOptions]="{standalone: true}">
     </div>
-<div class="table-responsive-sm separador-10">
+
+  </form>
+  <div class="col-12 separador-10" *ngIf="busqueda">
+    <label for="">Termino de busqueda:
+      <strong>{{busqueda}}</strong>
+    </label>
+  </div>
+  <div class="table-responsive-sm separador-10">
     <table class="table">
       <thead>
         <tr>
+          <th>F. Registro</th>
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Email</th>
@@ -27,17 +31,18 @@
       </thead>
       <tbody>
         <tr *ngFor="let user of users | searchPipe:key:busqueda">
+          <td>{{user.createdAt | date:'d-M-y' }}</td>
           <td>{{user.name}}</td>
           <td>{{user.surname}}</td>
           <td>{{user.email}}</td>
           <td>{{user.celular}}</td>
-          <td *ngIf="user.role === 'admin'" >Admin</td>
-          <td *ngIf="user.role === 'client'" >Cliente</td>
-          <td *ngIf="user.role === 'owner'" >Dueño</td>
-          <td *ngIf="user.isVerified === true " >Si</td>
-          <td *ngIf="user.isVerified === false " >No</td>
+          <td *ngIf="user.role === 'admin'">Admin</td>
+          <td *ngIf="user.role === 'client'">Cliente</td>
+          <td *ngIf="user.role === 'owner'">Dueño</td>
+          <td *ngIf="user.isVerified === true ">Si</td>
+          <td *ngIf="user.isVerified === false ">No</td>
         </tr>
       </tbody>
     </table>
   </div>
-
+</div>

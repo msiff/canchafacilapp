@@ -13,6 +13,8 @@ import { AdminRoutingModule } from './admin.routing';
 
 // Pipes
 import { SearchPipe } from './pipes/search.pipe';
+import { DatePipe } from '@angular/common';
+import { ListarSolicitudesComponent } from './components/listar-solicitudes/listar-solicitudes.component';
 
 
 @NgModule({
@@ -25,7 +27,8 @@ import { SearchPipe } from './pipes/search.pipe';
     ListarUsuariosComponent,
     MainComponent,
     ListarComplejosComponent,
-    SearchPipe
+    SearchPipe,
+    ListarSolicitudesComponent
   ]
 })
 export class AdminModule { }

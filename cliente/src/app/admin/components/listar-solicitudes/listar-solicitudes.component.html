@@ -1,0 +1,29 @@
+<div class="table-responsive-sm separador-10">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>F. Solicitud</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Telefono</th>
+          <th>Rol</th>
+          <th>Verificado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let solicitud of solicitudes">
+          <td>{{solicitud.createdAt | date:'d-M-y' }}</td>
+          <td>{{solicitud._userId.name}}</td>
+          <td>{{solicitud._userId.surname}}</td>
+          <td>{{solicitud._userId.email}}</td>
+          <td>{{solicitud._userId.celular}}</td>
+          <td *ngIf="solicitud._userId.role === 'admin'">Admin</td>
+          <td *ngIf="solicitud._userId.role === 'client'">Cliente</td>
+          <td *ngIf="solicitud._userId.role === 'owner'">Dueño</td>
+          <td *ngIf="solicitud._userId.isVerified === true ">Si</td>
+          <td *ngIf="solicitud._userId.isVerified === false ">No</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -15,6 +15,7 @@ var mailer = require('../services/mailer');
 // Modelos
 var User = require('../models/userModel');
 var EmailToken = require('../models/emailTokenModel');
+var solicitudOwner = require('../models/solicitudModel');
 
 // Acciones
 // Por cada modelo creo un controlador el cual se va a encargar de realizar las funciones.
@@ -116,18 +117,18 @@ function registrarUser(req, res) {
                                         // En el servicio mailer, estan las funciones par enviar mails, en este caso paso el mail al que enviar y el token de activacion, la funcion
                                         // crea el mail y lo envia. Devuelve ok si sale bien o err en caso contrario. El tema es que demora unos segundos en salir el email, por eso 
                                         // se informa al usuario que salio bien antes de enviar el email. En caso que al usuario no le llegue mail puede solicitarlo de nuevo.
-                                        mailer.emailBienvenida(userStored.email, emailTokenStored.token, (err) => {
-                                            if (err.type == 'err') {
-                                                return res.status(404).send({
-                                                    message: "Error al crear el usuario."
-                                                });
-                                            } else {
-                                                res.status(200).send({
-                                                    type: "ok",
-                                                    message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + user.email + '.'
-                                                });
-                                            }
-                                        });
+                                        // mailer.emailBienvenida(userStored.email, emailTokenStored.token, (err) => {
+                                        //     if (err.type == 'err') {
+                                        //         return res.status(404).send({
+                                        //             message: "Error al crear el usuario."
+                                        //         });
+                                        //     } else {
+                                        //         res.status(200).send({
+                                        //             type: "ok",
+                                        //             message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + user.email + '.'
+                                        //         });
+                                        //     }
+                                        // });
                                     }
                                 });
                             }
@@ -573,6 +574,80 @@ function resendEmailToken(req, res) {
     }
 }
 
+function solicitudForOwner(req, res) {
+    // Esta funcion permite al usuario Cliente, poder enviar una solicitud para converstirse en usuario Dueño. 
+    // Se comprueba que el usuario es de tipo Cliente, luego que no tiene esta solicitud pendiente y si se coumplen
+    // estas anteriores se crea una nueva solicitud.
+    var id = req.params.id;
+    if (id == null) {
+        res.status(404).send({
+            type: 'err',
+            message: 'Error, cierre sesion e intente nuevamente.'
+        });
+    } else {
+        User.findOne({
+            _id: id
+        }, (err, user) => {
+            if (err) {
+                return res.status(404).send({
+                    type: 'err',
+                    message: 'Error en el servidor, intente nuevamente.'
+                });
+            } else {
+                if (!user) return res.status(400).send({
+                    type: 'err',
+                    message: 'No podemos enviar la solicitud, comunicarse con un administrador.'
+                });
+                if (user.role == 'client') {
+                    solicitudOwner.findOne({
+                        _userId: user._id
+                    }, (err, userRepeat) => {
+                        if (err) {
+                            return res.status(404).send({
+                                type: 'err',
+                                message: 'Error en el servidor, intente nuevamente.'
+                            });
+                        } else {
+                            if (!userRepeat) {
+                                var solicitud = new solicitudOwner({
+                                    _userId: user._id,
+                                });
+                                solicitud.save(function (err, solicidudStored) {
+                                    if (err) {
+                                        return res.status(404).send({
+                                            type: 'err',
+                                            message: 'Error al enviar la solicitud.'
+                                        });
+                                    } else {
+                                        if (!solicidudStored) return res.status(400).send({
+                                            type: 'err',
+                                            message: 'No podemos enviar la solicitud, intente nuevamente'
+                                        });
+                                        res.status(200).send({
+                                            type: "ok",
+                                            message: 'Se envio la solicitud para poder crear y administrar su complejo, nos contactaremos con usted.'
+                                        });
+                                    }
+                                });
+                            } else {
+                                return res.status(200).send({
+                                    type: 'okno', 
+                                    message: 'Ya tenemos una solicitud de su parte, nos comunicamos a la brevedad.'
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    return res.status(404).send({
+                        type: 'err',
+                        message: 'Usted ya es dueño de una cancha.'
+                    });
+                }
+            }
+        });
+    }
+}
+
 module.exports = {
     pruebas,
     registrarUser,
@@ -583,4 +658,5 @@ module.exports = {
     getImage,
     tokenConfirmation,
     resendEmailToken,
+    solicitudForOwner
 };

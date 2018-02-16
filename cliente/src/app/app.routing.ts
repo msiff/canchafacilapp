@@ -9,6 +9,7 @@ import { MisDatosComponent } from './components/mis-datos/mis-datos.component';
 import { EditarMisdatosComponent } from './components/editar-misdatos/editar-misdatos.component';
 import { TokenConfirmationComponent } from './components/token-confirmation/token-confirmation.component';
 import { TokenResendComponent } from './components/token-resend/token-resend.component';
+import { SolicitarOwnerComponent } from './components/solicitar-owner/solicitar-owner.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -19,7 +20,7 @@ const routes: Routes = [
     { path: 'editar-datos', component: EditarMisdatosComponent },
     { path: 'confirmar-cuenta/:token', component: TokenConfirmationComponent},
     { path: 'enviar-codigo', component: TokenResendComponent},
-    // { path: 'admin-panel', component: AdminPanelComponent},
+    { path: 'solicitud-cancha', component: SolicitarOwnerComponent},
     { path: '**', component: HomeComponent }
 ];
 

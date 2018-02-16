@@ -1,31 +1,55 @@
 /* Fuentes */
+
 @font-face {
-    font-family: Roboto-Regular;
-    src: url(./assets/fonts/Roboto-Regular.ttf)
+  font-family: Roboto-Regular;
+  src: url(./assets/fonts/Roboto-Regular.ttf)
 }
+
 @font-face {
-    font-family: Roboto-Italic;
-    src: url(./assets/fonts/Roboto-Italic.ttf)
+  font-family: Roboto-Italic;
+  src: url(./assets/fonts/Roboto-Italic.ttf)
 }
+
 @font-face {
-    font-family: Roboto-Medium;
-    src: url(./assets/fonts/Roboto-Medium.ttf)
+  font-family: Roboto-Medium;
+  src: url(./assets/fonts/Roboto-Medium.ttf)
 }
+
 @font-face {
-    font-family: Roboto-Bold;
-    src: url(./assets/fonts/Roboto-Bold.ttf)
+  font-family: Roboto-Bold;
+  src: url(./assets/fonts/Roboto-Bold.ttf)
 }
+
 /* Clases Generales */
+
 .separador-10 {
-    margin-top: 10px;
+  margin-top: 10px;
 }
+
 .separador-20 {
-    margin-top: 20px;
+  margin-top: 20px;
 }
-body, html{
-    height: 100%;
-    margin:0; 
-    padding:0; 
-    font-family: Roboto-Regular !important;
-    font-size: 15px !important;
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto-Regular !important;
+  font-size: 15px !important;
+}
+
+/* Estos estilos son del listar-usuarios, estan definidos asi para 
+    evitar que la tabla rompa todo, mantiene el ancho asi los botones no se deforman */
+
+@media (max-width: 575.98px) {
+  .wrapperUsers {
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .wrapperUsers {
+    max-width: 90vw;
+  }
 }

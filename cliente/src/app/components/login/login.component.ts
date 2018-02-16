@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit, DoCheck {
 
   constructor(private _route: ActivatedRoute, private _router: Router, private _userService: UserService,
     private _authService: AuthService) {
-    this.user = new User('', '', '', '', '', '', '', 'client', '', false, '', '', '');
+    this.user = new User('', '', '', '', '', '', '', 'client', '', false, null, '', '', '');
   }
 
   ngOnInit() {

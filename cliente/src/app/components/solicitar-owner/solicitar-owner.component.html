@@ -1,0 +1,34 @@
+<div class="jumbotron jumbotron-fluid separador-10 text-center " *ngIf="message == null ">
+  <div class="container">
+    <h1>Tengo una cancha!</h1>
+    <p class="lead">Si quieres unirte a CanchaFacil para poder administrar tus reservas, horarios disponibles y publicarla en nuestro sistema
+      hacé click en el boton para que nos comuniquemos con vos para contarte mas!</p>
+    <button type="button" class="btn btn-primary text-center" (click)="solicitarOwner()">Unirme a CanchaFacil!</button>
+  </div>
+</div>
+<div class="container text-center separador-20" *ngIf="message && status == 'ok' ">
+  <div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Bien echo!</h4>
+    <p>Ya has enviado la solicitud para poder administrar tu cancha, en breve nos pondremos en contacto contigo para informarte
+      de nuestros servicios.</p>
+    <hr>
+    <p class="mb-0">Nuestro email de contacto es info@canchafacil.uy</p>
+  </div>
+</div>
+<div class="container text-center separador-20" *ngIf="message && status == 'okno' ">
+  <div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Bien echo!</h4>
+    <p>{{message}}</p>
+    <hr>
+    <p class="mb-0">Nuestro email de contacto es info@canchafacil.uy</p>
+  </div>
+</div>
+<div class="container separador-20" *ngIf="message && status == 'err' ">
+  <div class="alert alert-danger" role="alert">
+    {{message}}
+  </div>
+  <button type="button" class="btn btn-primary text-center" [routerLink]="['/home']" [routerLinkActive]="['active']">Ir a inicio</button>
+</div>
+<div *ngIf="message" class="text-center">
+  <button type="button" class="btn btn-primary text-center" [routerLink]="['/home']" [routerLinkActive]="['active']">Ir a inicio</button>
+</div>

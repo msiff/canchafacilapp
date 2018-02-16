@@ -8,6 +8,7 @@ var secret = 'clave_secreta';
 exports.ensureAuth = function(req, res, next) {
     var payload;
     // compureba si viene cabecera de autenticacion
+    // console.log(req.headers);
     if (!req.headers.authorization) {
         return res.status(403).send({message: 'La peticion no tiene cabecera de autenticacion'});
     }

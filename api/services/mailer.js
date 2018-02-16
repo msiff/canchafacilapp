@@ -18,13 +18,19 @@ function emailBienvenida(email, emailTokenStored) {
         from: 'Cancha Facil',
         to: email,
         subject: 'Bienvenido a Cancha Facil! Activa tu cuenta.',
-        html: '<p>Hola!</p><p>Por favor confirma tu cuenta para poder utilizar Cancha Facil.</p><p>Haz click en el siguiente enlace:' + url +'confirmar-cuenta/' + emailTokenStored + '</p>'
+        html: '<p>Hola!</p><p>Por favor confirma tu cuenta para poder utilizar Cancha Facil.</p><p>Haz click en el siguiente enlace:' + url + 'confirmar-cuenta/' + emailTokenStored + '</p>'
     };
     transporter.sendMail(mailOptions, (err) => {
         if (err) {
-            return {type: 'err', message: 'Error al intentar enviar el email.'};
+            return {
+                type: 'err',
+                message: 'Error al intentar enviar el email.'
+            };
         } else {
-            return {type: 'ok', message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + email + '.'};
+            return {
+                type: 'ok',
+                message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + email + '.'
+            };
         }
     });
 }
@@ -34,15 +40,24 @@ function reenviarToken(email, emailTokenStored) {
         from: 'Cancha Facil',
         to: email,
         subject: 'Bienvenido a Cancha Facil! Activa tu cuenta.',
-        html: '<p>Hola!</p><p>Por favor confirma tu cuenta para poder utilizar Cancha Facil.</p><p>Haz click en el siguiente enlace:' + url +'confirmar-cuenta/' + emailTokenStored + '</p>'
+        html: '<p>Hola!</p><p>Por favor confirma tu cuenta para poder utilizar Cancha Facil.</p><p>Haz click en el siguiente enlace:' + url + 'confirmar-cuenta/' + emailTokenStored + '</p>'
     };
     transporter.sendMail(mailOptions, (err) => {
         if (err) {
-            return {type: 'err', message: 'Error al intentar enviar el email.'};
+            return {
+                type: 'err',
+                message: 'Error al intentar enviar el email.'
+            };
         } else {
-            return {type: 'ok', message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + email + '.'};
+            return {
+                type: 'ok',
+                message: 'Registro completo! Se envio un correo para activar la cuenta a: ' + email + '.'
+            };
         }
     });
 }
 
-module.exports = {emailBienvenida, reenviarToken};
+module.exports = {
+    emailBienvenida,
+    reenviarToken
+};

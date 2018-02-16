@@ -82,4 +82,11 @@ export class UserService {
             .map(res => res.json());
     }
 
+    solicitarCancha(_id) {
+        const headers = new Headers({ 'Content-Type': 'application/json'});
+        headers.append('Authorization', this.getToken());
+        const options = new RequestOptions({ headers: headers });
+        return this._http.post(this.url + 'solicitud-owner/' + _id, options).map(res => res.json());
+    }
+
 }

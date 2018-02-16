@@ -2,6 +2,7 @@
 'use strict';
 // Modelos
 var User = require('../models/userModel');
+var Solicitud = require('../models/solicitudModel');
 
 // Esta funcion devuelve todos los usuarios..
 function getUsers(req, res) {
@@ -24,8 +25,41 @@ function getUsers(req, res) {
             }
         });
     } else {
-        res.status(404).send({message: 'No tienes permiso para realizar esta peticion.'});
+        res.status(404).send({
+            message: 'No tienes permiso para realizar esta peticion.'
+        });
     }
 }
 
-module.exports = {getUsers};
+function getSolicitudes(req, res) {
+    if (req.user.role == 'admin') {
+        Solicitud.find({}, (err, solicitudes) => {
+            if (err) {
+                res.status(500).send({
+                    message: 'Error en la peticion!'
+                });
+            } else {
+                if (!solicitudes) {
+                    res.status(404).send({
+                        type: 'err',
+                        message: 'No solicitudes..'
+                    });
+                } else {
+                    res.status(200).send({
+                        solicitudes
+                    });
+                }
+            }
+        }).populate('_userId');
+    } else {
+        res.status(404).send({
+            type: 'err',
+            message: 'No tienes permiso para realizar esta peticion.'
+        });
+    }
+}
+
+module.exports = {
+    getUsers,
+    getSolicitudes
+};

@@ -24,6 +24,13 @@ export class AdminService {
             .map(res => res.json());
     }
 
+    getSolicitudes() {
+        const headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.getToken() });
+
+        return this._http.get(this.url + 'get-solicitudes', { headers: headers })
+            .map(res => res.json());
+    }
+
     getIdentity() {
         const identity = JSON.parse(localStorage.getItem('identity'));
         if (identity !== 'undefined') {

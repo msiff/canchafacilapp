@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit, DoCheck {
 
   constructor(private _route: ActivatedRoute, private _router: Router, private _userService: UserService,
     private _authService: AuthService) {
-    this.user = new User('', '', '', '', '', '', '', 'client', '', false, '', '', '');
+    this.user = new User('', '', '', '', '', '', '', 'client', '', false, null, '', '', '');
   }
 
   ngOnInit() {
@@ -39,6 +39,8 @@ export class RegisterComponent implements OnInit, DoCheck {
     // que es el objeto que utiliza la funcion loginFb para enviarla a la API para hacer login o registrar.
     // Entonces luego del usuario asignado aca ocure un cambio y se ejecuta en ngDoCheck y ahi llamamos al
     // loginFb porque si el socualUser es null nos tira error.
+    this.identity = this._userService.getIdentity();
+    this.token = this._userService.getToken();
     this._authService.authState.subscribe((user) => {
       // console.log('on init');
       this.userSocial = user;
@@ -81,7 +83,7 @@ export class RegisterComponent implements OnInit, DoCheck {
           // Esto resetea el formulario solo si el usuario se crea correctamente, para eso en
           // el ngSubmit debemos pasar el formulario para pdoer hacerlo desde aca al reset.
           registerForm.reset();
-          this.user = new User('', '', '', '', '', '', '', 'client', '', false, '', '', '');
+          this.user = new User('', '', '', '', '', '', '', 'client', '', false, null, '', '', '');
         } else {
           this.message = response.message;
           this.status = 'error';

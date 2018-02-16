@@ -33,6 +33,7 @@ import { MisDatosComponent } from './components/mis-datos/mis-datos.component';
 import { EditarMisdatosComponent } from './components/editar-misdatos/editar-misdatos.component';
 import { TokenConfirmationComponent } from './components/token-confirmation/token-confirmation.component';
 import { TokenResendComponent } from './components/token-resend/token-resend.component';
+import { SolicitarOwnerComponent } from './components/solicitar-owner/solicitar-owner.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { TokenResendComponent } from './components/token-resend/token-resend.com
     EqualValidator,
     TokenConfirmationComponent,
     TokenResendComponent,
+    SolicitarOwnerComponent,
   ],
   imports: [
     BrowserModule,

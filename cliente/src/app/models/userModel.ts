@@ -10,6 +10,7 @@ export class User {
         public image: String,
         public photoUrl: String,
         public isVerified: boolean,
+        public createdAt: Date,
         public ownerData: {},
         public clientData: {},
         public providers: {}

@@ -2,26 +2,25 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 // Modelos
 import {User} from '../../../../app/models/userModel';
+import {SolicitudOwner} from '../../../../app/models/solicitudOwnerModel';
 
 // Servicios
 import { GLOBAL } from '../../../services/global.service';
 import { AdminService } from '../../../services/admin.service';
 
 @Component({
-  selector: 'app-listar-usuarios',
-  templateUrl: './listar-usuarios.component.html',
-  styleUrls: ['./listar-usuarios.component.css'],
+  selector: 'app-listar-solicitudes',
+  templateUrl: './listar-solicitudes.component.html',
+  styles: [],
   encapsulation: ViewEncapsulation.None,
   providers: [AdminService]
 })
-export class ListarUsuariosComponent implements OnInit {
+export class ListarSolicitudesComponent implements OnInit {
   public identity;
   public token;
-  public users =  new Array<User>();
+  public solicitudes =  new Array<SolicitudOwner>();
   public status;
   public message;
-  public busqueda;
-  public key = 'name';
 
   constructor(private _adminService: AdminService) {
     this.identity = this._adminService.getIdentity();
@@ -29,18 +28,19 @@ export class ListarUsuariosComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.getUsers();
+    this.getSolicitudes();
+    // console.log(this.getSolicitudes());
   }
 
-  getUsers() {
-    this._adminService.getUsers().subscribe(
+  getSolicitudes() {
+    this._adminService.getSolicitudes().subscribe(
       response => {
-        if (!response.users) {
+        if (!response.solicitudes) {
           this.status = 'error';
           this.message = 'Error al actualizar el usuario, vuelve a intentarlo';
         } else {
-          this.users = response.users;
-          // console.log(this.users);
+          this.solicitudes = response.solicitudes;
+          // console.log(this.solicitudes);
         }
       },
       err => {

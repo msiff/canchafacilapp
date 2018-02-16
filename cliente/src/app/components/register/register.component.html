@@ -18,6 +18,9 @@
           <a href="" [routerLink]="['/login']">Acá</a> -->
         </div>
         <div class="separador-10"></div>
+        <div class="alert alert-success" role="alert" *ngIf="identity">
+            <span>Usted ya esta logueado</span>
+        </div>
         <div *ngIf="!identity">
           <form action="" #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
             <div class="form-group-login">

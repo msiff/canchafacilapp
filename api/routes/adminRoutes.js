@@ -9,5 +9,6 @@ var midAuth = require('../middlewares/authenticated');
 
 // Rutas
 api.get('/get-users',midAuth.ensureAuth, adminController.getUsers);
+api.get('/get-solicitudes',midAuth.ensureAuth, adminController.getSolicitudes);
 
 module.exports = api;
