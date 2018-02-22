@@ -1,20 +1,28 @@
-<div class="table-responsive-sm separador-10">
+<div class="wrapperUsers">
+  <div class="table-responsive-sm separador-10">
     <table class="table">
       <thead>
         <tr>
-          <th>F. Solicitud</th>
+          <th>Creada</th>
+          <th>Aceptada</th>
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Email</th>
           <th>Telefono</th>
           <th>Rol</th>
           <th>Verificado</th>
+          <th>Estado</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let solicitud of solicitudes">
           <td>{{solicitud.createdAt | date:'d-M-y' }}</td>
-          <td>{{solicitud._userId.name}}</td>
+          <td>{{solicitud.aceptedAt | date:'d-M-y' }}</td>
+          <td>
+            <span class="d-inline-block text-truncate" style="max-width: 150px;">
+              {{solicitud._userId.name}}
+            </span>
+          </td>
           <td>{{solicitud._userId.surname}}</td>
           <td>{{solicitud._userId.email}}</td>
           <td>{{solicitud._userId.celular}}</td>
@@ -23,7 +31,14 @@
           <td *ngIf="solicitud._userId.role === 'owner'">Dueño</td>
           <td *ngIf="solicitud._userId.isVerified === true ">Si</td>
           <td *ngIf="solicitud._userId.isVerified === false ">No</td>
+          <td *ngIf="solicitud.aceptedAt == null ">
+            <button type="button" class="btn btn-warning btn-sm" (click)=aceptarOwner(solicitud)>Aceptar</button>
+          </td>
+          <td *ngIf="solicitud.aceptedAt != null ">
+            <button type="button" class="btn btn-success btn-sm" (click)=aceptarOwner(solicitud) disabled>Aceptado</button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>

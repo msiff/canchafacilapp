@@ -3,7 +3,8 @@
     <h1>Tengo una cancha!</h1>
     <p class="lead">Si quieres unirte a CanchaFacil para poder administrar tus reservas, horarios disponibles y publicarla en nuestro sistema
       hacé click en el boton para que nos comuniquemos con vos para contarte mas!</p>
-    <button type="button" class="btn btn-primary text-center" (click)="solicitarOwner()">Unirme a CanchaFacil!</button>
+    <p *ngIf="identity.celular == '' " class="separador-20" style="color:red">Para poder enviar la solicitud primero debes ingresar un numero de celular!. Puedes ingresarlo en la seccion mis datos haciendo click<a href="#" [routerLink]="['/editar-datos']" class="alert-link"> Aqui.</a></p>
+    <button type="button" class="btn btn-primary text-center" (click)="solicitarOwner()" [disabled]="!todook()">Unirme a CanchaFacil!</button>
   </div>
 </div>
 <div class="container text-center separador-20" *ngIf="message && status == 'ok' ">

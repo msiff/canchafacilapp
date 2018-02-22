@@ -32,7 +32,11 @@
       <tbody>
         <tr *ngFor="let user of users | searchPipe:key:busqueda">
           <td>{{user.createdAt | date:'d-M-y' }}</td>
-          <td>{{user.name}}</td>
+          <td>
+            <span class="d-inline-block text-truncate" style="max-width: 150px;">
+              {{user.name}}
+            </span>
+          </td>
           <td>{{user.surname}}</td>
           <td>{{user.email}}</td>
           <td>{{user.celular}}</td>

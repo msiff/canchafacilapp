@@ -9,7 +9,8 @@ var schema = mongoose.Schema;
 
 var solicitud = new mongoose.Schema({
     _userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-    createdAt: { type: Date, required: true, default: Date.now}
+    createdAt: { type: Date, required: true, default: Date.now},
+    aceptedAt: { type: Date, default: null}
 });
 
 module.exports = mongoose.model('solicitudOwner', solicitud);

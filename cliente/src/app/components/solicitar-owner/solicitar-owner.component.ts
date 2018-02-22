@@ -51,4 +51,11 @@ export class SolicitarOwnerComponent implements OnInit {
     });
   }
 
+  todook() {
+    if (this.identity.celular !== '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
