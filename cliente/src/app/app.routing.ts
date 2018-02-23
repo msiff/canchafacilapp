@@ -10,6 +10,13 @@ import { EditarMisdatosComponent } from './components/editar-misdatos/editar-mis
 import { TokenConfirmationComponent } from './components/token-confirmation/token-confirmation.component';
 import { TokenResendComponent } from './components/token-resend/token-resend.component';
 import { SolicitarOwnerComponent } from './components/solicitar-owner/solicitar-owner.component';
+import { MiComplejoComponent } from './components/mi-complejo/mi-complejo.component';
+
+// Guards
+import { UserGuard } from './services/user.guard';
+import { AdminGuard } from './services/admin.guard';
+import { OwnerGuard } from './services/owner.guard';
+
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,7 +27,8 @@ const routes: Routes = [
     { path: 'editar-datos', component: EditarMisdatosComponent },
     { path: 'confirmar-cuenta/:token', component: TokenConfirmationComponent},
     { path: 'enviar-codigo', component: TokenResendComponent},
-    { path: 'solicitud-cancha', component: SolicitarOwnerComponent},
+    { path: 'solicitud-cancha', component: SolicitarOwnerComponent, canActivate: [UserGuard]},
+    { path: 'mi-complejo', component: MiComplejoComponent, canActivate: [OwnerGuard]},
     { path: '**', component: HomeComponent }
 ];
 

@@ -24,6 +24,16 @@ import { AdminModule } from './admin/admin.module';
 // Rutas
 import { routing, appRoutingProviders } from './app.routing';
 
+// Guards
+import { UserGuard } from './services/user.guard';
+import { OwnerGuard } from './services/owner.guard';
+import { AdminGuard } from './services/admin.guard';
+
+// Servicios
+import { UserService } from './services/user.service';
+import { OwnerService } from './services/owner.service';
+import { AdminService } from './services/admin.service';
+
 // Componentes
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -34,6 +44,7 @@ import { EditarMisdatosComponent } from './components/editar-misdatos/editar-mis
 import { TokenConfirmationComponent } from './components/token-confirmation/token-confirmation.component';
 import { TokenResendComponent } from './components/token-resend/token-resend.component';
 import { SolicitarOwnerComponent } from './components/solicitar-owner/solicitar-owner.component';
+import { MiComplejoComponent } from './components/mi-complejo/mi-complejo.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +58,7 @@ import { SolicitarOwnerComponent } from './components/solicitar-owner/solicitar-
     TokenConfirmationComponent,
     TokenResendComponent,
     SolicitarOwnerComponent,
+    MiComplejoComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +68,9 @@ import { SolicitarOwnerComponent } from './components/solicitar-owner/solicitar-
     routing,
     AdminModule
   ],
-  providers: [appRoutingProviders, { provide: AuthServiceConfig, useFactory: provideConfig}],
+  providers: [OwnerGuard, OwnerService, UserGuard, UserService,
+    AdminGuard, AdminService,
+    appRoutingProviders, { provide: AuthServiceConfig, useFactory: provideConfig }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

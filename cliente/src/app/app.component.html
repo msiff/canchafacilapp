@@ -32,10 +32,13 @@
                 <a class="dropdown-item pointer" [routerLink]="['/admin-panel']" *ngIf="identity && identity.role == 'admin' ">Administracion</a>
               </li>
               <li data-toggle="collapse" data-target=".navbar-collapse.show">
-                <a class="dropdown-item pointer" [routerLink]="['/mis-datos']">Mis Datos</a>
+                  <a class="dropdown-item pointer" [routerLink]="['/solicitud-cancha']" *ngIf="identity && identity.role == 'client' ">Tengo una cancha</a>
               </li>
               <li data-toggle="collapse" data-target=".navbar-collapse.show">
-                  <a class="dropdown-item pointer" [routerLink]="['/solicitud-cancha']" *ngIf="identity && identity.role == 'client' ">Tengo una cancha</a>
+                  <a class="dropdown-item pointer" [routerLink]="['/mi-complejo']" *ngIf="identity && identity.role == 'owner' ">Mi Complejo</a>
+              </li>
+              <li data-toggle="collapse" data-target=".navbar-collapse.show">
+                <a class="dropdown-item pointer" [routerLink]="['/mis-datos']">Mis Datos</a>
               </li>
               <li data-toggle="collapse" data-target=".navbar-collapse.show">
                 <a class="dropdown-item pointer" (click)="logout()" [routerLink]="['/home']">Salir</a>

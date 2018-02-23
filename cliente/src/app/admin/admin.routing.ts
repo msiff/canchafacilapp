@@ -7,8 +7,11 @@ import { ListarUsuariosComponent } from './components/listar-usuarios/listar-usu
 import { ListarComplejosComponent } from './components/listar-complejos/listar-complejos.component';
 import { ListarSolicitudesComponent } from './components/listar-solicitudes/listar-solicitudes.component';
 
+// Guards
+import { AdminGuard } from './../services/admin.guard';
+
 const adminRoutes: Routes = [
-    { path: 'admin-panel', component: MainComponent, children: [
+    { path: 'admin-panel', component: MainComponent, canActivate: [AdminGuard], children: [
         {path: '', redirectTo: 'listado-usuarios', pathMatch: 'full'},
         {path: 'listado-usuarios', component: ListarUsuariosComponent},
         {path: 'listado-complejos', component: ListarComplejosComponent},
