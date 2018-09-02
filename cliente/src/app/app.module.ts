@@ -19,7 +19,9 @@ export function provideConfig() {
 }
 
 // Modulos Personales
-import { AdminModule } from './admin/admin.module';
+import { AdminModule } from './adminModule/admin.module';
+import { ClientModule } from './ClientModule/client.module';
+import { OwnerModule } from './ownerModule/owner.module';
 
 // Rutas
 import { routing, appRoutingProviders } from './app.routing';
@@ -44,7 +46,7 @@ import { EditarMisdatosComponent } from './components/editar-misdatos/editar-mis
 import { TokenConfirmationComponent } from './components/token-confirmation/token-confirmation.component';
 import { TokenResendComponent } from './components/token-resend/token-resend.component';
 import { SolicitarOwnerComponent } from './components/solicitar-owner/solicitar-owner.component';
-import { MiComplejoComponent } from './components/mi-complejo/mi-complejo.component';
+// import { MiComplejoComponent } from './components/mi-complejo/mi-complejo.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,7 @@ import { MiComplejoComponent } from './components/mi-complejo/mi-complejo.compon
     TokenConfirmationComponent,
     TokenResendComponent,
     SolicitarOwnerComponent,
-    MiComplejoComponent
+    // MiComplejoComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,9 @@ import { MiComplejoComponent } from './components/mi-complejo/mi-complejo.compon
     HttpModule,
     SocialLoginModule,
     routing,
-    AdminModule
+    AdminModule,
+    ClientModule,
+    OwnerModule
   ],
   providers: [OwnerGuard, OwnerService, UserGuard, UserService,
     AdminGuard, AdminService,

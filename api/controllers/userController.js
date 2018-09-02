@@ -304,7 +304,6 @@ function loginFacebook(req, res) {
     }
 }
 
-
 function updateUser(req, res) {
     var userId = req.params.id;
     var update = req.body;

@@ -13,10 +13,10 @@ import { AdminGuard } from './../services/admin.guard';
 const adminRoutes: Routes = [
     { path: 'admin-panel', component: MainComponent, canActivate: [AdminGuard], children: [
         {path: '', redirectTo: 'listado-usuarios', pathMatch: 'full'},
+        {path: '**', redirectTo: 'listado-usuarios', pathMatch: 'full'},
         {path: 'listado-usuarios', component: ListarUsuariosComponent},
         {path: 'listado-complejos', component: ListarComplejosComponent},
-        {path: 'listado-solicitudes', component: ListarSolicitudesComponent},
-        {path: '**', redirectTo: 'listado-usuarios', pathMatch: 'full'}
+        {path: 'listado-solicitudes', component: ListarSolicitudesComponent}
       ]}
   ];
 
